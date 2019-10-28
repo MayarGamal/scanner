@@ -1,0 +1,262 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+bool Is_letter(char a);
+bool Is_number(char a);
+void scanner(string s);
+
+vector<string> out;
+bool my_error =  false;
+
+
+int main()
+{
+	string input;
+
+	while (1)
+	{
+		my_error = false;
+		out.clear();
+		cout << "Please enter your code:\n";
+		getline(cin, input);
+
+		int input_size = input.length();
+		string temp;
+		int count = 0;
+
+		for (int i = 0; i < input_size;)
+		{
+			count = 0;
+			temp.clear();
+			if (Is_letter(input[i]) || Is_number(input[i]))
+			{
+				temp.resize(temp.length() + 1);
+				temp[count] = input[i];
+				count++;
+				i++;
+				while ((i < input_size) && (Is_letter(input[i]) || Is_number(input[i])))
+				{
+					temp.resize(temp.length() + 1);
+					temp[count] = input[i];
+					i++;
+					count++;
+				}
+				scanner(temp);
+			}
+			else if (input[i] == ' ')
+			{
+				i++;
+			}
+			else if (input[i] == ':' || input[i] == '>' || input[i] == '<')
+			{
+				temp.resize(temp.length() + 1);
+				temp[count] = input[i];
+				i++;
+				count++;
+				if (input[i] == '=')
+				{
+					temp.resize(temp.length() + 1);
+					temp[count] = input[i];
+					i++;
+					count++;
+				}
+				scanner(temp);
+			}
+			else if (input[i] == '+' || input[i] == '-' || input[i] == ';' || input[i] == '*' || input[i] == '/'
+				|| input[i] == '[' || input[i] == ']' || input[i] == '(' || input[i] == ')' || input[i] == '=' )
+			{
+				temp.resize(temp.length() + 1);
+				temp[count] = input[i];
+				i++;
+				count++;
+				scanner(temp);
+			}
+			else if (input[i] == '{')
+			{
+
+				i++;
+				while (input[i] != '}' && i < input_size)
+				{
+					i++;
+				}
+				i++;
+			}
+			else
+			{
+				my_error = true;
+				break;
+			}
+		}
+
+		if (my_error)
+		{
+			cout << "ERROR!!" << endl;
+		}
+		else
+		{
+			for (int i = 0; i < out.size(); i++)
+			{
+				cout << out[i] << endl;
+			}
+
+		}
+
+	}
+}
+
+
+bool Is_letter(char a)
+{
+	if (( a >= 'a' &&  a <= 'z' ) || (a >= 'A' && a <= 'Z') )
+	{
+		return 1;
+	}
+	else
+	{
+		return 0; 
+	}
+}
+bool Is_number(char a)
+{
+	if ((a >= '0' && a <= '9'))
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
+void scanner(string s)
+{
+
+	 if (s == "if")
+	{
+		out.push_back("if\tIF");
+	}
+	else if (s == "then")
+	{
+		out.push_back("then\tTHEN");
+	}
+	else if (s == "read")
+	{
+		out.push_back("read\tREAD");
+	}
+	else if (s == "else")
+	{
+		out.push_back("else\tELSE");
+	}
+	else if (s == "return")
+	{
+		out.push_back("return\tRETURN");
+	}
+	else if (s == "begin")
+	{
+		out.push_back("begin\tBEGIN");
+	}
+	else if (s == "end")
+	{
+		out.push_back("end\tEND");
+	}
+	else if (s == "main")
+	{
+		out.push_back("main\tMAIN");
+	}
+	else if (s == "string")
+	{
+		out.push_back("string\tSTRING");
+	}
+	else if (s == "int")
+	{
+		out.push_back("int\tINT");
+	}
+	else if (s == "until")
+	{
+		 out.push_back("until\tUNTIL");
+	}
+	else if (s == "+")
+	 {
+		 out.push_back("+\tPLUS");
+	 }
+
+	else if (s == "-")
+	 {
+		 out.push_back("-\tMINUS");
+	 }
+	else if (s == "*")
+	 {
+		 out.push_back("*\tMUL");
+	 }
+	else if (s == "/")
+	 {
+		 out.push_back("/\tDIVIDE");
+	 }
+	else if (s == ";")
+	 {
+		 out.push_back(";\tSEMI");
+	 }
+	else if (s == "=")
+	 {
+		 out.push_back("=\tEQUAL");
+	 }
+	else if (s == "<=")
+	 {
+		 out.push_back("<=\tLESS THAN OR EQUAL");
+	 }
+	else if (s == ">=")
+	 {
+		 out.push_back(">=\tMORE THAN OR EQUAL");
+	 }
+	else if (s == ":=")
+	{
+		out.push_back(":=\tassign");
+	}
+	else if (s == "["  )
+	{
+		out.push_back("[\tLeft bracket");
+	}
+	else if (s == "(")
+	 {
+		 out.push_back("(\tLeft bracket");
+	 }
+	else if (s == "]" )
+	{
+		out.push_back("]\tright bracket");
+	}
+	else if (s == ")")
+	{
+		 out.push_back(")\tright bracket");
+	}
+	else if ( s == "<" )
+	{
+		 out.push_back("<\tAngel bracket");
+	}
+	else if (s == ">")
+	{
+		 out.push_back(">\tAngel bracket");
+	}
+	else if (Is_letter(s[0]))
+	{
+		 out.push_back(s + "\tidentifier");
+	}
+	else if (Is_number(s[0]))
+	{
+		 for (int i = 1; i < s.length(); i++)
+		 {
+			 if (!Is_number(s[i]))
+			 {
+				 my_error = true;
+
+			 }
+		 }
+		 out.push_back(s + "\tnumber");
+	}
+	else
+	{
+		my_error = true;
+	}
+	
+}
